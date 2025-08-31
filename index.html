@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Mini Flygsimulator</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0b1020">
+  <style>
+    html, body { margin:0; padding:0; height:100%; background:#0b1020; overflow:hidden; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    #hud { position: fixed; top: 8px; left: 8px; right: 8px; display:flex; gap:8px; justify-content:space-between; color: #cde7ff; font-weight:600; text-shadow: 0 0 4px #000; pointer-events:none; }
+    #tips { position: fixed; bottom: 8px; left: 8px; right: 8px; color:#a8ffb0; font-size: 12px; opacity:.9; text-shadow: 0 0 4px #000; }
+    #joysticks { position: fixed; bottom: 0; left: 0; right: 0; height: 42vh; pointer-events:none; }
+    .stick { position:absolute; width: 42vw; height: 42vh; border-radius: 16px; border: 1px solid rgba(255,255,255,.2); box-shadow: inset 0 0 50px rgba(255,255,255,.06); }
+    #stickL { left: 0; bottom: 0; }
+    #stickR { right: 0; bottom: 0; }
+    .nub { position:absolute; width: 64px; height: 64px; border-radius:50%; background: rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.35); transform: translate(-50%,-50%); top:50%; left:50%; pointer-events:none; }
+    #pauseBtn { position: fixed; top: 10px; right: 10px; z-index: 10; padding: 8px 12px; background: rgba(0,0,0,.4); color:#fff; border: 1px solid rgba(255,255,255,.25); border-radius:8px; }
+    #installHint { position: fixed; top: 48px; right: 10px; z-index: 10; padding: 8px 12px; background: rgba(0,0,0,.4); color:#fff; border: 1px solid rgba(255,255,255,.25); border-radius:8px; display:none; }
+    canvas { touch-action: none; } /* Prevent browser gestures */
+  </style>
+</head>
+<body>
+  <button id="pauseBtn" aria-label="Pausa">⏯</button>
+  <div id="installHint">Tips: Lägg till på hemskärmen för helskärm & offline</div>
+  <div id="hud">
+    <div id="leftHud">Höjd: 0 m<br>Fart: 0 kt</div>
+    <div id="centerHud">Pitch 0° | Roll 0° | Yaw 0°</div>
+    <div id="rightHud">Motoreffekt: 0%</div>
+  </div>
+  <div id="joysticks" aria-hidden="true">
+    <div id="stickL" class="stick"><div class="nub" id="nubL"></div></div>
+    <div id="stickR" class="stick"><div class="nub" id="nubR"></div></div>
+  </div>
+  <div id="tips">Vänster ruta: pitch/roll (drag). Höger ruta: yaw (horisontellt) + gas (vertikalt). Dubbeltryck för att centrera. Landningsställ: G. Paus: ⏯.</div>
+
+  <script type="module" src="main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
+  </script>
+</body>
+</html>
